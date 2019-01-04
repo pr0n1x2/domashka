@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Сигнализация</title>
+</head>
+<body>
+<script type="text/javascript">
+    const doorIsClosed = true;
+    const signalingIsEnabled = true;
+
+    if (doorIsClosed && signalingIsEnabled) {
+        console.log('Все в порядке');
+    } else if (doorIsClosed && !signalingIsEnabled) {
+        console.log('У вас выключена сигнализация!');
+    } else if (!doorIsClosed && signalingIsEnabled) {
+        console.log('Вы забыли закрыть дверь');
+    } else if (!doorIsClosed && !signalingIsEnabled) {
+        console.log('У вас открыта дверь и не включена сигнализация');
+    }
+</script>
+</body>
+</html>

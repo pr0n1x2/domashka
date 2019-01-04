@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор</title>
+</head>
+<body>
+<script type="text/javascript">
+    let calculate = (expression) => {
+        const arr = expression.split(' ');
+        const countExpressionParts = 3;
+        const firstOperand = +arr[0];
+        const secondOperand = +arr[2];
+        const operator = arr[1];
+        let result;
+
+        if (arr.length != countExpressionParts) {
+            return 'Выражение должно состоять только из 3 частей.';
+        }
+
+        switch (operator) {
+            case '+':
+                result = firstOperand + secondOperand;
+                break;
+            case '-':
+                result = firstOperand - secondOperand;
+                break;
+            case '*':
+                result = firstOperand * secondOperand;
+                break;
+            case '/':
+                result = firstOperand / secondOperand;
+
+                if (result == Infinity) {
+                    return 'Нельзя делить на ноль.';
+                }
+
+                break;
+            default:
+                return 'Вы ввели недопустимый оператор "' +  operator + '"';
+        }
+
+        if (isNaN(result)) {
+            return 'Произошла ошибка при вычислении.';
+        }
+
+        return result;
+    };
+
+    const result = calculate('12 + 8');
+
+    if (typeof result == 'string') {
+        console.log( 'Ошибка: ' + result );
+    } else {
+        console.log( 'Результат: ' + result );
+    }
+</script>
+</body>
+</html>
