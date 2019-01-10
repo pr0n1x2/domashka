@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Циклы</title>
+</head>
+<body>
+<script type="text/javascript">
+    const person = {
+        name: 'Carol',
+        surname: 'Swanson',
+        phone: '321-867-8554',
+        birthday: 'October 31, 1977',
+        email: 'CarolWSwanson@armyspy.com',
+    }
+
+    // Задание 1: Перебор свойст объекта
+    let getObjectProperties = () => {
+        for (let prop in person) {
+            console.log(`Имя свойства: ${prop}, значение: ${person[prop]}`);
+        }
+    }
+
+    // Задание 2: Перебор значений массива
+    let getArrayProperties = () => {
+        const array = Object.entries(person);
+
+        for (let i = 0; i < array.length; i++) {
+            console.log(`Имя свойства: ${array[i][0]}, значение: ${array[i][1]}`);
+        }
+    }
+
+    // Задание 3: Вывести значение от 1 до 10
+    let printCounter = () => {
+        for (let i = 1; i <= 10; i++) {
+            console.log(i);
+        }
+    }
+
+    // Задание 4: Сгенерировать 10 случайных чисел от 5 до 20 в бесконечном цикле
+    let getRandomInt = (max) => {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    let generateNumbers = () => {
+        const array = [];
+        let iteration = 0;
+
+        while (true) {
+            const number = getRandomInt(40);
+            iteration++;
+
+            if (number >= 5 && number <= 20) {
+                if (array.push(number) === 10) {
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < array.length; i++) {
+            console.log(array[i]);
+        }
+
+        console.log(`Всего было выполнено ${iteration} итераций`);
+    }
+
+    // getObjectProperties();
+    // getArrayProperties();
+    // printCounter();
+    generateNumbers();
+</script>
+</body>
+</html>
