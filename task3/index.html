@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Objects</title>
+</head>
+<body>
+<script type="text/javascript">
+    const people = [
+        {name: 'Владимир', surname: 'Скирга', gender: 'male', birthday: new Date('1984-08-01')},
+        {name: 'Валентина', surname: 'Дудка', gender: 'female', birthday: new Date('1983-11-29')},
+        {name: 'Сергей', surname: 'Федоренко', gender: 'male', birthday: new Date('1976-03-05')},
+        {name: 'Валентина', surname: 'Роликова', gender: 'female', birthday: new Date('1980-12-31')},
+        {name: 'Евгений', surname: 'Рыбальченко', gender: 'male', birthday: new Date('1998-02-18')},
+    ];
+
+    const Human = function (person) {
+        this.name = person.name;
+        this.surname = person.surname;
+        this.gender = person.gender;
+        this.birthday = person.birthday;
+
+        this.getFullname = () => {
+            return `${this.name} ${this.surname}`;
+        }
+
+        this.getAge = () => {
+            const today = new Date();
+            const month = today.getMonth() - this.birthday.getMonth();
+            let age = today.getFullYear() - this.birthday.getFullYear();
+
+            if (month < 0 || (month === 0 && today.getDate() < this.birthday.getDate())) {
+                age--;
+            }
+
+            return age;
+        }
+
+        this.getDeclension = () => {
+            const cases = [2, 0, 1, 1, 1, 2];
+            const titles = ['год', 'года', 'лет'];
+            const age = this.getAge();
+
+            return titles[ (age % 100 > 4 && age % 100 < 20 ) ? 2 : cases[ (age % 10 < 5 ) ? age % 10 : 5 ] ];
+        }
+
+        this.getGeneralInfo = () => {
+            const gender = ['Мужчина', 'Женщина'];
+            const pronoun = ['ему', 'ей'];
+            const genderIndex = this.gender === 'male' ? 0 : 1;
+
+            return `${gender[genderIndex]} ${this.getFullname()} и ${pronoun[genderIndex]} ${this.getAge()} ${this.getDeclension()}`;
+        }
+    }
+
+    for (let person of people) {
+        let human = new Human(person);
+        console.log(human.getGeneralInfo());
+    }
+</script>
+</body>
+</html>
