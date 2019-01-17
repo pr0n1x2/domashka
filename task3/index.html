@@ -33,13 +33,17 @@
                 age--;
             }
 
-            return age;
+            console.log('Вычисление возраста');
+
+            return () => {
+                return age;
+            }
         }
 
         this.getDeclension = () => {
             const cases = [2, 0, 1, 1, 1, 2];
             const titles = ['год', 'года', 'лет'];
-            const age = this.getAge();
+            const age = this.getAge()();
 
             return titles[ (age % 100 > 4 && age % 100 < 20 ) ? 2 : cases[ (age % 10 < 5 ) ? age % 10 : 5 ] ];
         }
@@ -49,7 +53,7 @@
             const pronoun = ['ему', 'ей'];
             const genderIndex = this.gender === 'male' ? 0 : 1;
 
-            return `${gender[genderIndex]} ${this.getFullname()} и ${pronoun[genderIndex]} ${this.getAge()} ${this.getDeclension()}`;
+            return `${gender[genderIndex]} ${this.getFullname()} и ${pronoun[genderIndex]} ${this.getAge()()} ${this.getDeclension()}`;
         }
     }
 
