@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM</title>
+</head>
+<body>
+<div class="menu"></div>
+<script type="text/javascript">
+    const links = [
+        {name: 'Overview', url: 'https://readthedocs.org/projects/webjs/'},
+        {name: 'Downloads', url: 'https://readthedocs.org/projects/webjs/downloads/'},
+        {name: 'Search', url: 'https://readthedocs.org/projects/webjs/search/'},
+        {name: 'Builds', url: 'https://readthedocs.org/projects/webjs/builds/'},
+        {name: 'Versions', url: 'https://readthedocs.org/projects/webjs/versions/'},
+    ];
+
+    const MenuBuilder = function (links) {
+        this.links = links;
+
+        this.getLink = (link) => {
+            // Создаем Element A
+            const aTeg = document.createElement('a');
+
+            // Создаем TextNode
+            const aText = document.createTextNode(link.name);
+
+            // Создаем Attr href
+            const aHref = document.createAttribute('href');
+            aHref.value = link.url;
+
+            // Добавляем TextNode в Element A
+            aTeg.appendChild(aText);
+
+            // Добавляем Attr в Element A
+            aTeg.setAttributeNode(aHref);
+
+            // Добавляем в Element A класс link
+            aTeg.classList.add('link');
+
+            return aTeg;
+        }
+
+        this.buildMenu = () => {
+            // Создаем Element NAV
+            const nav = document.createElement('nav');
+
+            for (let link of this.links) {
+                // Добавляем в конец Element NAV созданный Element A
+                nav.appendChild(this.getLink(link));
+            }
+
+            return nav;
+        }
+    }
+
+    const menuBuilder = new MenuBuilder(links);
+    const nav = menuBuilder.buildMenu();
+
+    // Находим .menu и добавляев в него созданный нами Element NAV
+    document.querySelector('.menu').appendChild(nav);
+</script>
+</body>
+</html>
