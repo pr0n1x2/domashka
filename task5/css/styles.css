@@ -1,0 +1,62 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body > div {
+    position: absolute;
+}
+
+.bg {
+    width: 100%;
+    height: 100%;
+    background: #868dc4 url('../images/bg.jpg') no-repeat;
+    background-size: 100% 100%;
+}
+
+.transition {
+    transition-property: top, left;
+    transition-duration: 1.5s;
+    transition-timing-function: linear;
+}
+
+.actor {
+    background-size: 100% 100%;
+}
+
+.hide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hide-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: antiquewhite;
+    clip: rect(auto, 500px, auto, 0);
+}
+
+.chaplin {
+    background-image: url('../images/chaplin.png');
+}
+
+.leonardo {
+    background-image: url('../images/leonardo.png');
+}
+
+.marilyn {
+    background-image: url('../images/marilyn.png');
+}
+
+.pamela {
+    background-image: url('../images/pamela.png');
+}
+
+.scene {
+    background: #061f3e url('../images/scene.jpg') no-repeat;
+    background-size: 100% 100%;
+}
