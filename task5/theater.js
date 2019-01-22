@@ -1,7 +1,7 @@
 const Scene = function (windowWidth, windowHeight) {
     this.el; // Свойство где будет храниться Element cцена
 
-    // Создаем и настиаваем сцену
+    // Создаем и настраиваем сцену
     this.create = (windowWidth, windowHeight) => {
         // Вычисляем геометрию относительно размеров рабочей области
         const width = Math.floor(windowWidth / 5);
@@ -57,10 +57,13 @@ const Actor = function (width, height, guise) {
         actor.style.top = '20px';
         actor.style.left = '20px';
 
+        // В Element актер добавляем еще 2 div'a, чтобы можно было имитировать обложку
+        // Обложка будет открываться по мере того, как актер будет выходить на сцену
+        // Обложка реализована с помощью css свойтва clip
         const actorHide = document.createElement('div');
-        actorHide.classList.add('hide');
-
         const actorHideBackground = document.createElement('div');
+
+        actorHide.classList.add('hide');
         actorHideBackground.classList.add('hide-background');
 
         actorHide.appendChild(actorHideBackground);
@@ -70,7 +73,7 @@ const Actor = function (width, height, guise) {
         this.el = document.body.appendChild(actor);
     }
 
-    // Метод добавляет актеру css класс, который позволяет анимировать автера на уровне css
+    // Метод добавляет актеру css класс, который позволяет анимировать актера на уровне css
     // Этот медот вызывается только когда актер должен занять первоначальную позицию
     this.setTransition = () => {
         this.el.classList.add(this.transition);
@@ -88,11 +91,11 @@ const Actor = function (width, height, guise) {
         this.previousPosition = left;
     }
 
-    // Метод вешает на актера отбработчик событий
+    // Метод вешает на актера обработчик событий
     this.react = (func) => {
         // Вешаем на Element актер событие click
         this.el.addEventListener('click', () => {
-            // Если актер играет, тогда мы не может кликнуть по нему
+            // Если актер играет, тогда мы не можем кликнуть по нему
             if (this.active) {
                 return;
             }
@@ -110,25 +113,61 @@ const Actor = function (width, height, guise) {
     // и для него нужно рассчитывать пересечения со сценой
     this.move = (position, sceneRect = null) => {
         const moveTo = (position, previousPosition, oldPosition, sceneRect, actorBg) => {
+            // Метод который высчитывает пересечения актера со сценой
             const calculateConflux = () => {
-                const actorBgRect = actorBg.getBoundingClientRect();
+                // Получаем текущие координаты и геометрию актера
+                const actorRect = this.el.getBoundingClientRect();
 
-                if (actorBgRect.x >= sceneRect.right || actorBgRect.right <= sceneRect.x) {
+                // Проверяем, если актер находится за пределами сцены, тогда
+                // вычисления не нужны
+                if (actorRect.x >= sceneRect.right || actorRect.right <= sceneRect.x) {
                     return;
                 }
 
-                if (actorBgRect.x > sceneRect.x && actorBgRect.right < sceneRect.right) {
+                // Проверяем, если актер полностью находится в пределах сцены, тогда
+                // так же вычисления не нужны
+                if (actorRect.x > sceneRect.x && actorRect.right < sceneRect.right) {
                     return;
                 }
 
-                console.log('YES');
+                // Высичления нужны, только в тех случаях, когда актер пересекается
+                // с краями сцены, тогда в этом случае нужно сделать вычисления и
+                // открыть или закрыть обложку.
+                // Обложка меняется с помощью css свойства clip
+
+                let x1 = 0;
+                let x2 = 0;
+
+                if (position < previousPosition) {
+                    if (actorRect.x < sceneRect.right && actorRect.x > sceneRect.x) {
+                        x1 = actorRect.width;
+                        x2 = sceneRect.right - actorRect.x;
+                    } else if (actorRect.x < sceneRect.x) {
+                        x1 = sceneRect.x - actorRect.x;
+                    }
+                } else {
+                    if (actorRect.right > sceneRect.x && actorRect.right < sceneRect.right) {
+                        x1 = actorRect.width - (actorRect.right - sceneRect.x);
+                    } else if (actorRect.right > sceneRect.right) {
+                        x1 = actorRect.width;
+                        x2 = actorRect.width - (actorRect.right - sceneRect.right);
+                    }
+                }
+
+                actorBg.style.clip = `rect(auto, ${x1}px, auto, ${x2}px)`;
             }
 
+            // Метод который двигает актера
             const intervalID = setInterval(() => {
                 if (oldPosition !== position) {
+                    // Проверяем в каком направлении должен двигаться актер (влево или вправо)
                     position < previousPosition ? oldPosition-- : oldPosition++;
+
+                    // Обновляем css свойство, тем самым двигая актера на 1 пиксель
                     this.el.style.left = `${oldPosition}px`;
 
+                    // Если задан параметр sceneRect, тогда этот актер должен выйти на сцену
+                    // Тогда мы должны высчитать пересечения со сценой
                     if (sceneRect !== null) {
                         calculateConflux();
                     }
@@ -141,12 +180,18 @@ const Actor = function (width, height, guise) {
             }, 10);
         }
 
+        // В этой переменной будет храниться обложка для актера
         let actorBg = null;
 
+        // Если был передан второй параметр, нужно будет высчитывать пересечения
+        // обложки и сцены. На этом этапе мы находим и записываем в переменную
+        // Element обложки, для того, чтобы не делать эту операцию каждый раз
+        // при сдвиге на следующий пиксель
         if (sceneRect !== null) {
             actorBg = this.el.querySelector('.hide-background');
         }
 
+        // Вызываем метод, который двигает актера и высчитывает пересечения со сценой
         moveTo(position, this.previousPosition, this.previousPosition, sceneRect, actorBg);
     }
 
@@ -209,11 +254,11 @@ const ActorManager = function (startPosition, actorWidth, actorTop, direction = 
         }
     }
 
-    // Метод, который подготавлявает всех актеров, после того, как она заняли первоначальные позиции
+    // Метод, который подготавливает всех актеров, после того, как они заняли первоначальные позиции
     this.prepareActors = (func) => {
         for (let position of this.positions) {
             if (position.actor !== null) {
-                // Удаляем css класс, который отвечает за css анимацию (больше она не успользуется)
+                // Удаляем css класс, который отвечает за css анимацию (больше он не используется)
                 position.actor.removeTransition();
 
                 // Вешаем на актера обработчик событий
@@ -222,7 +267,7 @@ const ActorManager = function (startPosition, actorWidth, actorTop, direction = 
         }
     }
 
-    // Метод удаляет из менеджера актера по которому клинкули, так как он должен перейти в противоположный менеджер
+    // Метод удаляет из менеджера актера по которому кликнули, так как он должен перейти в противоположный менеджер
     this.removeActiveActor = (actor) => {
         for (let position of this.positions) {
             if (position.actor !== null) {
@@ -335,8 +380,8 @@ const Theater = function () {
         }
 
         // Делаем окончательную настройку актеров
-        // Задержку устанавливаем для того, чтобы нельзя было клинкуть по актеру
-        // до того, как он занял первоначальную поцизию
+        // Задержку устанавливаем для того, чтобы нельзя было кликнуть по актеру
+        // до того, как он занял первоначальную позицию
         setTimeout(this.prepareActors, 3500);
     }
 
@@ -349,7 +394,7 @@ const Theater = function () {
         }
     }
 
-    // Функция обработчки, которая вызывается всякий раз, когда мы кликнули по актеру
+    // Функция обработчик, которая вызывается всякий раз, когда мы кликнули по актеру
     this.moveActors = (actor) => {
         // Менеджер актера в момент когда мы на него кликнули
         const actorManager = actor.myManager;
@@ -365,13 +410,13 @@ const Theater = function () {
         actorManager.removeActiveActor(actor);
 
         // Говорим актеру, чтобы он вышел на сцену
-        // Для расчета пересечения со сценой, вторый параметром передает геометрию и координаты сцены
+        // Для расчета пересечения со сценой, вторым параметром передаем геометрию и координаты сцены
         actor.move(position, this.sceneRect);
 
         // Добавляем актера в противоположный менеджер
         manager.addActor(actor);
 
-        // Группируем всех актуров в менеджере
+        // Группируем всех актеров в менеджере
         actorManager.groupActors();
     }
 
