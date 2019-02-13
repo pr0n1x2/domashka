@@ -4,7 +4,7 @@ block content
     h1= title
     p See console
     script.
-        window.addEventListener("load", function (event) {
+        window.addEventListener("load", (event) => {
             fetch('/swapi')
                 .then((response) => {
                     if (!response.ok) {
