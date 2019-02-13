@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h1= title
+    p See console
+    script.
+        window.addEventListener("load", function (event) {
+            fetch('/swapi')
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+
+                    return response.json();
+                })
+                .then((user) => {
+                    console.log(`Name: ${user.name}\nHeight: ${user.height}`);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
