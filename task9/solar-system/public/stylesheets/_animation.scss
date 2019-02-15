@@ -1,0 +1,22 @@
+@keyframes swing {
+    0% {
+        transform: translateY(0)
+    }
+    100%{
+        transform: translateY(-1.5%)
+    }
+}
+
+@keyframes swing2 {
+    100%{
+        transform: translateY(0)
+    }
+}
+
+.gravity {
+    animation: swing 1.4s ease-in-out 10 alternate;
+}
+
+.equilibrium {
+    animation-play-state: paused;
+}
