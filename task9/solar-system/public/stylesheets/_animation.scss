@@ -1,22 +1,25 @@
-@keyframes swing {
-    0% {
-        transform: translateY(0)
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0
     }
-    100%{
-        transform: translateY(-1.5%)
+    50% {
+        opacity: 1
     }
 }
 
-@keyframes swing2 {
-    100%{
-        transform: translateY(0)
+@keyframes swing {
+    0%, 100% {
+        -webkit-transform: translate3d(0, 0, 0);
+    }
+    50% {
+        -webkit-transform: translate3d(0, -1%, 0);
     }
 }
 
 .gravity {
-    animation: swing 1.4s ease-in-out 10 alternate;
-}
-
-.equilibrium {
-    animation-play-state: paused;
+    animation-name: swing;
+    animation-duration: 2400ms;
+    animation-timing-function: ease-in-out;
+    animation-play-state: running;
+    animation-iteration-count: infinite
 }
