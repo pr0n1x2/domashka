@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 @import url('https://fonts.googleapis.com/css?family=Russo+One');
+@import "_variables";
 @import "_animation";
 
 body {
@@ -31,6 +32,13 @@ body {
   line-height: 90px;
   opacity: 1;
   transition: all 2.5s ease-out;
+
+  @media screen and (max-width:$tablet-width) {
+    top: 51%;
+    width: 500px;
+    font-size: 56px;
+    line-height: 70px;
+  }
 }
 
 .scale-presentation-up {
@@ -49,6 +57,14 @@ nav {
   z-index: 1;
   transition: opacity 1s linear;
 
+  @media screen and (max-width:$tablet-width) {
+    top: 12px;
+  }
+
+  @media screen and (max-width:$old-monitors-width) {
+    top: 20px;
+  }
+
   ul {
     display: flex;
     flex-direction: row;
@@ -62,10 +78,26 @@ nav {
       flex-grow: 1;
       margin: 0 8px;
 
+      @media screen and (max-width:$tablet-width) {
+        margin: 0 4px;
+      }
+
+      @media screen and (max-width:$old-monitors-width) {
+        margin: 0 6px;
+      }
+
       a {
         font-weight: bold;
         color: #ffffff;
         text-decoration: none;
+
+        @media screen and (max-width:$tablet-width) {
+          font-size: 14px;
+        }
+
+        @media screen and (max-width:$old-monitors-width) {
+          font-size: 15px;
+        }
       }
     }
   }
@@ -84,6 +116,16 @@ nav {
   padding-top: 50px;
   margin: auto;
   transform: scale(0.005);
+
+  @media screen and (max-width:$tablet-width) {
+    width: 38%;
+    padding-top: 35px;
+  }
+
+  @media screen and (max-width:$old-monitors-width) {
+    width: 50%;
+    padding-top: 100px;
+  }
 
   .ratio-inner {
     position: relative;
@@ -161,9 +203,18 @@ nav {
   overflow: hidden;
   transition: height 0.3s linear;
 
+  @media screen and (max-width:$old-monitors-width) {
+    top: 30%;
+    right: 1.5%;
+  }
+
   .border {
     padding: 20px 20px 40px;
     background: rgba(175, 184, 255, 0.2);
+
+    @media screen and (max-width:$tablet-width) {
+      padding: 20px 20px 30px;
+    }
 
     .text {
       padding-top: 17px;
@@ -172,6 +223,11 @@ nav {
       color: beige;
       line-height: 32px;
 
+      @media screen and (max-width:$tablet-width) {
+        padding-top: 13px;
+        font-size: 18px;
+        line-height: 22px;
+      }
     }
   }
 }
@@ -195,6 +251,14 @@ nav {
   height: 100px;
   overflow: hidden;
 
+  @media screen and (max-width:$tablet-width) {
+    height: 65px;
+  }
+
+  @media screen and (max-width:$old-monitors-width) {
+    height: 100px;
+  }
+
   ul {
     display: flex;
     flex-direction: row;
@@ -204,6 +268,10 @@ nav {
     width: 60%;
     margin: auto;
     padding: 0;
+
+    @media screen and (max-width:$old-monitors-width) {
+      width: 75%;
+    }
 
     li {
       position: relative;
@@ -222,11 +290,27 @@ nav {
           font-weight: bold;
           font-size: 18px;
           padding: 4px 0;
+
+          @media screen and (max-width:$tablet-width) {
+            font-size: 16px;
+          }
+
+          @media screen and (max-width:$old-monitors-width) {
+            font-size: 18px;
+          }
         }
 
         .fact-value {
           font-size: 24px;
           padding: 0;
+
+          @media screen and (max-width:$tablet-width) {
+            font-size: 20px;
+          }
+
+          @media screen and (max-width:$old-monitors-width) {
+            font-size: 22px;
+          }
         }
       }
     }
@@ -260,6 +344,15 @@ nav {
   font: normal bold 52px "Russo One";
   color: #ffffff;
   transition: left 0.5s linear;
+
+  @media screen and (max-width:$tablet-width) {
+    top: 58%;
+    font-size: 42px;
+  }
+
+  @media screen and (max-width:$old-monitors-width) {
+    top: 62%;
+  }
 }
 
 .planet-description {
@@ -270,63 +363,76 @@ nav {
   color: #ffdfc9;
   max-width: 20%;
   transition: left 0.5s linear;
+
+  @media screen and (max-width:$tablet-width) {
+    top: 67%;
+    font-size: 22px;
+  }
+
+  @media screen and (max-width:$old-monitors-width) {
+    top: 69%;
+  }
 }
 
 .scale-planet-description-up {
   left: 7% !important;
+
+  @media screen and (max-width:$old-monitors-width) {
+    left: 5% !important;
+  }
 }
 
 .sun {
-  background-image: url('../images/sun.png');
+  background-image: url($path-to-img + 'sun.png');
   background-size: 100% calc(100% - 7px);
 }
 
 .mercury {
-  background-image: url('../images/mercury.png');
+  background-image: url($path-to-img + 'mercury.png');
   background-size: 100% calc(100% - 7px);
 }
 
 .venus {
-  background-image: url('../images/venus.png');
+  background-image: url($path-to-img + 'venus.png');
   background-size: 100% 100%;
 }
 
 .earth {
-  background-image: url('../images/earth.png');
+  background-image: url($path-to-img + 'earth.png');
   background-size: 100% calc(100% - 7px);
 }
 
 .moon {
-  background-image: url('../images/moon.png');
+  background-image: url($path-to-img + 'moon.png');
   background-size: 100% 100%;
 }
 
 .mars {
-  background-image: url('../images/mars.png');
+  background-image: url($path-to-img + 'mars.png');
   background-size: 100% 100%;
 }
 
 .jupiter {
-  background-image: url('../images/jupiter.png');
+  background-image: url($path-to-img + 'jupiter.png');
   background-size: 100% calc(100% - 10px);
 }
 
 .neptune {
-  background-image: url('../images/neptune.png');
+  background-image: url($path-to-img + 'neptune.png');
   background-size: 100% 100%;
 }
 
 .saturn {
-  background-image: url('../images/saturn.png');
+  background-image: url($path-to-img + 'saturn.png');
   background-size: 100% 100%;
 }
 
 .uranus {
-  background-image: url('../images/uranus.png');
+  background-image: url($path-to-img + 'uranus.png');
   background-size: 100% 100%;
 }
 
 .pluto {
-  background-image: url('../images/pluto.png');
+  background-image: url($path-to-img + 'pluto.png');
   background-size: 100% 100%;
 }

@@ -1,23 +1,35 @@
+// В этом массиве будут кешироваться объекты планет, полученные с сервера
 const planets = [];
+
+// Переменная содержит текущий объект планеты
 let planet = null;
+
+// Переменная содержит предыдущий объект планеты
 let previousPlanet = null;
 
+// Переменная хранит DOM элемент, где отображается приветствующая надпись
 let presentationContainer = null;
 
+// Переменные хранят DOM элементы, в которых отображается планета
 let planetContainer = null;
 let planetAtmosphere = null;
 let planetElement = null;
 
+// Переменные хранят DOM элементы, в которых отображается тексты про планету
 let descElement = null;
 let textElement = null;
 
+// Переменные хранят DOM элементы, в которых отображается название планета и ее описание
 let planetName = null;
 let planetDescription = null;
 
+// Переменная хранит DOM элемент, где отображаются факты об планете
 let factContainers = null;
 
+// Переменная хранит DOM элемент, где отображаются меню
 let menuContainer = null;
 
+// Массив ассоциаций цветов, которыми будут показаны факты о планете и их соответсвующие классы
 const factColorAssotiations = [
     {name: 'white', value: 'fact-text-white-color'},
     {name: 'blue', value: 'fact-text-blue-color'},
@@ -25,16 +37,19 @@ const factColorAssotiations = [
     {name: 'red', value: 'fact-text-red-color'}
 ];
 
+// Промисированная функция, с помощью которой, происходит задержка между действиями на экране
 const delay = (time) => {
     return new Promise((resolve, reject) => {
         setTimeout(resolve, time);
     });
 };
 
+// Функция которая записывает в переменную planet текущий объект планеты
 const setPlanet = (planetObj) => {
     planet = planetObj;
 }
 
+// Функция которая получает из сервера объект планеты
 const getPlanet = (name) => {
     return new Promise((resolve, reject) => {
         const url = `/planet/${name}`;
@@ -53,6 +68,7 @@ const getPlanet = (name) => {
     });
 }
 
+// Функция которая ищет планету в кеше, если она ранее была загружена из сервера
 const getPlanetFromCache = (name) => {
     return new Promise((resolve, reject) => {
         let isFindPlanetInCache = false;
@@ -65,12 +81,14 @@ const getPlanetFromCache = (name) => {
             }
         }
 
+        // Если планета в кеше не найдена тогда получаем планету из сервера
         if (!isFindPlanetInCache) {
             reject(name);
         }
     });
 }
 
+// Функция которая меняет факты о текущей планете
 const fact = (name, value, nameColor, valueColor, containerIndex) => {
     const container = factContainers[containerIndex].querySelector('.fact');
     const nameContainer = container.querySelector('.fact-name');
@@ -106,6 +124,7 @@ const fact = (name, value, nameColor, valueColor, containerIndex) => {
     container.classList.add('scale-fact-up');
 };
 
+// Функция которая отображает текст на экране, когда мы нажали на кнопку на планете
 const description = (text) => {
     const prom = delay(0);
 
@@ -133,6 +152,7 @@ const description = (text) => {
         });
 };
 
+// Функция, которая размещает информационные кнопки на текущей планете
 const button = (top, left, text) => {
     let el = document.createElement('button');
 
@@ -153,6 +173,7 @@ const button = (top, left, text) => {
         });
 };
 
+// Функция которая показывает на экране текущею планету
 const showPlanet = () => {
     delay(0)
         .then(() => {
@@ -213,6 +234,7 @@ const showPlanet = () => {
         });
 }
 
+// Функция которая прячет с экрана текущею планету
 const hidePlanet = () => {
     delay(0)
         .then(() => {
@@ -277,7 +299,9 @@ const hidePlanet = () => {
         });
 }
 
+// Свойство срабатывает когда весь DOM был загружен при открытии страницы
 window.addEventListener('load', () => {
+    // Когда DOM был загружен, присваиваем переменным элементы на странице
     planetContainer = document.querySelector('.ratio');
     planetAtmosphere = document.querySelector('.ratio-inner');
     planetElement = planetContainer.querySelector('.ratio-content');
@@ -294,19 +318,25 @@ window.addEventListener('load', () => {
 
     menuContainer = document.querySelector('nav');
 
-    let audio = new Audio('/music/music.mp3');
+    // Проигрываем музыку
+    const audio = new Audio('/music/music.mp3');
     audio.play();
 
     const menuLinks = menuContainer.querySelectorAll('a');
 
+    // Вешаем на каждый пункт меню обработчик события click, так как запрос к серверу
+    // осуществляем через ajax
     for (let i = 0; i < menuLinks.length; i++) {
         menuLinks[i].addEventListener('click', (event) => {
             const dataPlanet = event.currentTarget.dataset['planet'];
 
+            // Если кликаем на планете, которая в данный момент отображается, тогда ничего не делаем
             if (planet.name === dataPlanet) {
                 return false;
             }
 
+            // Функция обработчик события 'animationiteration'
+            // Предназначена для того, чтобы плавно, без скачков остановить анимацию планеты
             const animationIteration = (event) => {
                 if (event.animationName == 'swing') {
                     event.currentTarget.classList.remove('gravity');
@@ -316,18 +346,24 @@ window.addEventListener('load', () => {
 
             planetContainer.addEventListener("animationiteration", animationIteration);
 
+            // В переменную previousPlanet записываем объект планеты, которая должна скрыться
             previousPlanet = planet;
 
+            // Пока идет анимация на экране, делаем асинхронный запрос в кеш, чтобы найти следующею планету
+            // Если планета в кеше не будет найдена, тогда будет произведен запрос на сервер
             getPlanetFromCache(dataPlanet)
                 .then(setPlanet)
                 .catch((name) => {
                     getPlanet(name).then(setPlanet);
                 });
 
+            // Прячем текущею планету и показывает следующею
             hidePlanet();
         });
     }
 
+    // При открытии страницы, запрашиваем данные с сервера о первой планете,
+    // показывает приветствие и показываем планету
     getPlanet('sun')
         .then((name) => {
             return setPlanet(name);
