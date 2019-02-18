@@ -242,6 +242,10 @@ nav {
 
 .scale-description-up {
   height: 460px;
+
+  @media screen and (max-width:$tablet-width) {
+    height: 360px;
+  }
 }
 
 .facts {
