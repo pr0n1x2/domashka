@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  form(method='post', action='/')
+    div
+      input(type='text', name='email', maxlength='120', placeholder='Enter E-mail')
+    div
+      input(type='password', name='password', maxlength='40', placeholder='Enter Password')
+    div
+      button(type='submit') Send
