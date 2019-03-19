@@ -20,4 +20,24 @@ a {
       padding: 4px 10px;
       font-size: 14px; }
 
+.error {
+  margin-top: 15px;
+  color: red;
+  font-weight: bold; }
+
+.error-hide {
+  display: none; }
+
+.container {
+  margin-top: 30px;
+  width: 800px; }
+  .container .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap; }
+    .container .row div {
+      width: 20%; }
+  .container .head {
+    font-weight: bold; }
+
 /*# sourceMappingURL=style.css.map */

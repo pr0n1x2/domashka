@@ -8,18 +8,17 @@ router.post('/add', function(req, res, next) {
   const formData = req.body;
   const ajv = new Ajv({verbose: true});
   const valid = ajv.validate(userSchema, formData);
-  const result = {status: true};
+  const result = {status: false};
 
   if (!valid) {
-      result.status = false;
       result.data = {message: `${ajv.errors[0].parentSchema.description} ${ajv.errors[0].message}`};
-  } else {
-      User.create(formData, (err, newUser) => {
-          if (err) {
-              result.status = false;
-              result.data = {message: err};
-              return;
-          }
+      res.json(result);
+      return;
+  }
+
+  User.create(formData)
+      .then((newUser) => {
+          result.status = true;
 
           result.data = {
               id: newUser._id,
@@ -28,10 +27,13 @@ router.post('/add', function(req, res, next) {
               age: newUser.getAge(),
               created: newUser.createdAt
           };
-      });
-  }
 
-  res.json(result);
+          res.json(result);
+      })
+      .catch(() => {
+          result.data = {message: 'An error has occurred, the data has not been saved'};
+          res.json(result);
+      });
 });
 
 module.exports = router;
