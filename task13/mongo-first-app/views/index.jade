@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  div.form
+    div
+      input(type='text', name='firstname', maxlength=40, placeholder='Enter first name')
+    div
+      input(type='text', name='lastname', maxlength=40, placeholder='Enter last name')
+    div
+      input(type='text', name='birthday', maxlength=10, placeholder='Enter birthday YYYY--MM-DD')
+    div
+      button Add User
+
+  script(src="/javascripts/main.js")
