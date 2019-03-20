@@ -3,7 +3,8 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
 
 a {
-  color: #00B7FF; }
+  color: #00B7FF;
+  text-decoration: none; }
 
 .form {
   display: flex;
@@ -15,7 +16,7 @@ a {
       border-radius: 3px;
       padding: 5px 3px;
       font-size: 14px;
-      width: 200px; }
+      width: 220px; }
     .form div button {
       padding: 4px 10px;
       font-size: 14px; }
@@ -30,13 +31,16 @@ a {
 
 .container {
   margin-top: 30px;
-  width: 800px; }
+  width: 900px; }
   .container .row {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap; }
+    .container .row:hover {
+      background-color: #ececec; }
     .container .row div {
-      width: 20%; }
+      width: 20%;
+      padding: 5px 0; }
   .container .head {
     font-weight: bold; }
 

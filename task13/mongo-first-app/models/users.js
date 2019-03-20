@@ -35,6 +35,24 @@ userSchema.methods.getAge = function () {
     return age;
 };
 
+userSchema.statics.formatDate = function (data, isUseTime = false) {
+    const addZero = (number) => {
+        if (number < 10) {
+            number = `0${number}`;
+        }
+
+        return number;
+    };
+
+    let dateTime = data.toDateString();
+
+    if (isUseTime) {
+        dateTime += ` at ${addZero(data.getHours())}:${addZero(data.getMinutes())}`
+    }
+
+    return dateTime;
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

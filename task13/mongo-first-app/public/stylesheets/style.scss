@@ -5,6 +5,7 @@ body {
 
 a {
   color: #00B7FF;
+  text-decoration: none;
 }
 
 .form {
@@ -19,7 +20,7 @@ a {
       border-radius: 3px;
       padding: 5px 3px;
       font-size: 14px;
-      width: 200px;
+      width: 220px;
     }
 
     button {
@@ -41,15 +42,20 @@ a {
 
 .container {
   margin-top: 30px;
-  width: 800px;
+  width: 900px;
 
   .row {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 
+    &:hover {
+      background-color: #ececec;
+    }
+
     div {
       width: 20%;
+      padding: 5px 0;
     }
   }
 

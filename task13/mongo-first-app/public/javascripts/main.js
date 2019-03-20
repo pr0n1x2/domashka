@@ -21,27 +21,54 @@ const postData = (url, data = {}, successCallback = null, errorCallback = null) 
             return response.json();
         })
         .then((record) => {
-            successCallback(record);
+            if (successCallback !== null) {
+                successCallback(record);
+            }
         })
         .catch((error) => {
-            errorCallback(error);
+            if (errorCallback !== null) {
+                errorCallback(error);
+            }
         });
 };
 
 const showUser = (user) => {
-    const created = new Date(user.created);
     const row = document.createElement('div');
     row.classList.add('row');
     row.dataset.item = user.id;
 
-
     row.appendChild(createColumn(user.name));
-    row.appendChild(createColumn((new Date(user.birthday)).toDateString()));
+    row.appendChild(createColumn(user.birthday));
     row.appendChild(createColumn(user.age));
-    row.appendChild(createColumn(`${created.toDateString()} ${addZero(created.getHours())}:${addZero(created.getMinutes())}`));
+    row.appendChild(createColumn(user.created));
+
+    const link = document.createElement('a');
+    const lintText = document.createTextNode('remove');
+    let linkAttr = document.createAttribute('href');
+
+    linkAttr.value = 'javascript:;';
+    link.setAttributeNode(linkAttr);
+    link.appendChild(lintText);
+    link.classList.add('remove-user');
+
+    const actionElement = document.createElement('div');
+    actionElement.appendChild(link);
+
+    row.appendChild(actionElement);
 
     table.append(row);
+
+    clearForm();
 };
+
+const createColumn = (text) => {
+    const el = document.createElement('div');
+    const elText = document.createTextNode(text);
+
+    el.appendChild(elText);
+
+    return el;
+}
 
 const showError = (message) => {
     error.innerText = message;
@@ -54,21 +81,10 @@ const hideError = () => {
     }
 };
 
-const createColumn = (text) => {
-    const el = document.createElement('div');
-    const elText = document.createTextNode(text);
-
-    el.appendChild(elText);
-
-    return el;
-}
-
-const addZero = (number) => {
-    if (number < 10) {
-        number = `0${number}`;
-    }
-
-    return number;
+const clearForm = () => {
+    firstName.value = '';
+    lastName.value = '';
+    birthday.value = '';
 };
 
 window.addEventListener('load', () => {
@@ -100,5 +116,29 @@ window.addEventListener('load', () => {
             },
             showError
         );
+    });
+
+    table.addEventListener('click', (event) => {
+        if (event.target.classList.contains('remove-user')) {
+            const row = event.target.parentNode.parentNode;
+            const id = row.dataset.item;
+
+            if (confirm('Are you sure you want to delete this user?')) {
+                row.remove();
+
+                const formData = {id: id};
+
+                postData(
+                    '/users/delete',
+                    formData,
+                    (result) => {
+                        if (!result.status) {
+                            showError(result.data.message);
+                        }
+                    },
+                    showError
+                );
+            }
+        }
     });
 });

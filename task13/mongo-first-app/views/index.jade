@@ -8,7 +8,7 @@ block content
     div
       input(type='text', name='lastname', maxlength=40, placeholder='Enter last name')
     div
-      input(type='text', name='birthday', maxlength=10, placeholder='Enter birthday YYYY--MM-DD')
+      input(type='text', name='birthday', maxlength=10, placeholder='Enter birthday YYYY-MM-DD')
     div
       button Add User
   div.error.error-hide
@@ -19,5 +19,13 @@ block content
       div Age
       div Created
       div Action
+    each user in users
+      div.row(data-item= user._id.toString())
+        div= user.fullname
+        div= User.formatDate(user.birthday)
+        div= user.getAge()
+        div= User.formatDate(user.createdAt, true)
+        div
+          a.remove-user(href='javascript:;') remove
 
   script(src="/javascripts/main.js")
