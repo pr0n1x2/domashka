@@ -45,6 +45,7 @@ const Seeder = function () {
                 house: '11',
                 zip: '12324'
             },
+            order_id: '5c95110ddf4598295c41bec3'
         }];
 
         for (user of users) {
@@ -133,6 +134,111 @@ const Seeder = function () {
 
         for (product of products) {
             Product.create(product);
+        }
+
+        const articles = [{
+            _id: '5c950763da41a927c82406e7',
+            name: 'iPhone Xs и iPhone Xs Max — обзор смартфонов Apple',
+            text: 'Сегодня производителям все сложнее вызывать ажиотаж на старте продаж, но Apple чудесным образом собирает очереди перед своими магазинами даже без значительных изменений в iPhone. В этом году новые модели действительно не получили мажорного обновления, только внутренние апгрейды и появление увеличенной версии с приставкой Мах. Но это вовсе не означает, что в iPhone Xs и iPhone Xs Max нет ничего нового, даже наоборот: они стали быстрее, получили версии с 512 ГБ памяти, новый софт камеры и улучшенный звук. Поэтому давайте детальнее разберемся, как все это работает на практике.',
+            url: 'iphone-xs-i-iphone-xs-max-obzor-smartfonov-apple',
+            tags: ['5c950c5373c1d61cd8a97497', '5c950c5373c1d61cd8a97498']
+        }, {
+            _id: '5c950763da41a927c82406e8',
+            name: 'Обзор iPhone 7 Plus',
+            text: 'На первый взгляд iPhone 7 Plus тяжело отличить от предыдущей модели. Тем не менее, как и в случае с iPhone 7, Apple заявляет, что внутри это совсем другой смартфон. Как будто в доказательство этого, на тыльной его стороне компания расположила сразу две камеры. Давайте посмотрим, что нового в iPhone 7 Plus и стал ли он лучше снимать с двумя объективами.',
+            url: 'obzor-iphone-7-plus',
+            tags: ['5c950c5373c1d61cd8a97497', '5c950c5373c1d61cd8a97498']
+        }, {
+            _id: '5c950763da41a927c82406e9',
+            name: 'Обзор флагмана Samsung Galaxy S10/S10+',
+            text: 'Линейка Galaxy в 2019 году становится юбилейной, выходит десятое поколение этих смартфонов. Это самые популярные смартфоны на Android, их продажи исчисляются сотнями миллионов штук за эти годы. В Samsung всегда старались сделать бескомпромиссные устройства, в которых были бы самые последние технологии, и при этом упор сделан не только на сами технологии, но и на удобство использования.',
+            url: 'samsung-galaxy-s10-plus',
+            tags: ['5c950c5373c1d61cd8a97499']
+        }, {
+            _id: '5c950763da41a927c82406ea',
+            name: 'Обзор Nokia 7.1: камера с оптикой ZEISS и чистый Android',
+            text: 'Компания HMD Global продолжает возрождать легендарный бренд Nokia. И сегодня речь пойдет не о супер-флагмане, а о смартфоне, который станет самым популярным в этом сезоне.',
+            url: 'nokia-7-1-review',
+            tags: ['5c950c5373c1d61cd8a9749a']
+        }];
+
+        for (article of articles) {
+            Article.create(article);
+        }
+
+        const tags = [{
+            _id: '5c950c5373c1d61cd8a97497',
+            name: 'Apple',
+            url: 'apple',
+            articles: ['5c950763da41a927c82406e7', '5c950763da41a927c82406e8']
+        }, {
+            _id: '5c950c5373c1d61cd8a97498',
+            name: 'iPhone',
+            url: 'iphone',
+            articles: ['5c950763da41a927c82406e7', '5c950763da41a927c82406e8']
+        }, {
+            _id: '5c950c5373c1d61cd8a97499',
+            name: 'Samsung',
+            url: 'samsung',
+            articles: ['5c950763da41a927c82406e9']
+        }, {
+            _id: '5c950c5373c1d61cd8a9749a',
+            name: 'Nokia',
+            url: 'nokia',
+            articles: ['5c950763da41a927c82406ea']
+        }];
+
+        for (tag of tags) {
+            Tag.create(tag);
+        }
+
+        const orders = [{
+            _id: '5c95110ddf4598295c41bec1',
+            user_id: '5c94e45ab8bf111308c2973f',
+            complete: true,
+            products: [{
+                product_id: '5c94f0ec0944801408ac5e52',
+                count: 1,
+                cost: 759900
+            }, {
+                product_id: '5c94f0ec0944801408ac5e58',
+                count: 1,
+                cost: 1649900
+            }]
+        }, {
+            _id: '5c95110ddf4598295c41bec2',
+            user_id: '5c94e79c973d4e1e5cd2f66f',
+            complete: true,
+            products: [{
+                product_id: '5c94f0ec0944801408ac5e55',
+                count: 3,
+                cost: 599900
+            }, {
+                product_id: '5c94f0ec0944801408ac5e5b',
+                count: 1,
+                cost: 639900
+            }, {
+                product_id: '5c94f0ec0944801408ac5e5e',
+                count: 2,
+                cost: 189900
+            }]
+        }, {
+            _id: '5c95110ddf4598295c41bec3',
+            user_id: '5c94e813c97edf2230104893',
+            complete: false,
+            products: [{
+                product_id: '5c94f0ec0944801408ac5e60',
+                count: 1,
+                cost: null
+            }, {
+                product_id: '5c94f0ec0944801408ac5e55',
+                count: 2,
+                cost: null
+            }]
+        }];
+
+        for (order of orders) {
+            Order.create(order);
         }
     };
 };

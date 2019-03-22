@@ -22,6 +22,8 @@ const orderProductSchema = new Schema({
         type: Number,
         default: null,
     },
+}, {
+    _id : false
 });
 
 module.exports = orderProductSchema;
