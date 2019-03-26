@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Ajv = require('ajv');
 const User = require('models/user');
+const GooglePlaces = require('classes/places');
 const addressSchema = require('schemas/address');
+const placeSchema = require('schemas/place');
 
 router.post('/address', function(req, res, next) {
     const formData = req.body;
+    const googleMapsClient = new GooglePlaces();
     const ajv = new Ajv({verbose: true});
     const valid = ajv.validate(addressSchema, formData);
     const result = {status: false};
@@ -16,20 +19,63 @@ router.post('/address', function(req, res, next) {
         return;
     }
 
-    User.findOneAndUpdate(
-        {_id: '5c94e45ab8bf111308c2973f'},
-        {address: formData},
-        null,
-        (err, user) => {
-            if (!err) {
-                result.status = true;
-                res.json(result);
+    googleMapsClient.placeDetails(formData.placeId)
+        .then((response) => {
+            if (response.json.status === 'OK') {
+                const userAddress = {
+                    googleAddressId: formData.googleId,
+                    googlePlaceId: formData.placeId,
+                };
+
+                if (typeof(response.json.result.formatted_address) !== 'undefined') {
+                    userAddress.formattedAddress = response.json.result.formatted_address;
+                }
+
+                if (typeof(response.json.result.name) !== 'undefined') {
+                    userAddress.name = response.json.result.name;
+                }
+
+                if (typeof(response.json.result.photos) !== 'undefined') {
+                    userAddress.photos = [];
+
+                    for (let photo of response.json.result.photos) {
+                        userAddress.photos.push(photo.photo_reference);
+                    }
+                }
+
+                return userAddress;
             } else {
-                result.message = err;
-                res.json(result);
+                throw new Error(googleMapsClient.getErrorByStatusCode(response.json.status));
             }
-        }
-    );
+        })
+        .then((place) => {
+            const valid = ajv.validate(placeSchema, place);
+
+            if (!valid) {
+                throw new Error(`${ajv.errors[0].parentSchema.description} ${ajv.errors[0].message}`);
+            }
+
+            return place;
+        })
+        .then((place) => {
+            User.update(
+                {_id: '5c94e45ab8bf111308c2973f'},
+                { $push: { address: place } },
+                (err, user) => {
+                    if (!err) {
+                        result.status = true;
+                    } else {
+                        result.message = err;
+                    }
+
+                    res.json(result);
+                }
+            );
+        })
+        .catch((error) => {
+            console.log(error);
+            // res.json({status: false, message: error.message});
+        });
 });
 
 module.exports = router;

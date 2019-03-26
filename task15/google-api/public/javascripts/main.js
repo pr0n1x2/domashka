@@ -41,6 +41,7 @@ const showAddresses = (addresses) => {
 
         row.appendChild(rowText);
         row.dataset.item = address.id;
+        row.dataset.place = address.place_id;
 
         table.appendChild(row);
     }
@@ -106,8 +107,9 @@ window.addEventListener('load', () => {
 
     table.addEventListener('click', (event) => {
         const id = event.target.dataset.item;
+        const place_id = event.target.dataset.place;
         const address = event.target.innerText;
-        const formData = {googleId: id, address: address};
+        const formData = {googleId: id, placeId: place_id, address: address};
 
         if (!isAddressExists(id)) {
             changeCurrentAddress(id, address);

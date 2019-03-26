@@ -2,15 +2,26 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const addressSchema = new Schema({
-    googleId: {
+    googleAddressId: {
+        type: String,
+        required: true,
+    },
+    googlePlaceId: {
+        type: String,
+        required: true,
+    },
+    formattedAddress: {
+        type: String,
+        required: true,
+    },
+    name: {
         type: String,
     },
-    address: {
-        type: String,
-        trim: true,
-    },
-}, {
-    _id : false
+    photos: [],
+    isMainAddress: {
+        type: Boolean,
+        default: true,
+    }
 });
 
 module.exports = addressSchema;

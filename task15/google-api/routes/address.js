@@ -1,42 +1,30 @@
 const express = require('express');
+const GooglePlaces = require('classes/places');
 const router = express.Router();
-const googleMapsClient = require('@google/maps').createClient({
-    key: 'AIzaSyBewlIjuU9RCmaAa2JgAKXN42TCnEV_Yp8',
-    Promise: Promise
-});
 
 router.post('/google', function(req, res, next) {
     const formData = req.body;
+    const googleMapsClient = new GooglePlaces();
 
-    googleMapsClient.placesAutoComplete({
-        input: formData.address,
-        sessiontoken: 'dfbgsedtw4t3425sdfgsdg', // Не знаю, что сюда передавать!!!
-        language: 'uk',
-        types: 'address',
-    })
-        .asPromise()
+    googleMapsClient.placesAutoComplete(formData.address)
         .then((response) => {
-            if (response.json.status === 'OK' && response.json.predictions.length > 0) {
+            if (response.json.status === 'OK') {
                 const data = {status: true, addresses: []};
 
                 for (let address of response.json.predictions) {
-                    data.addresses.push({id: address.id, address: address.description})
+                    data.addresses.push({id: address.id, place_id: address.place_id, address: address.description})
                 }
 
                 return data;
             } else {
-                throw new Error('No matches were found');
+                throw new Error(googleMapsClient.getErrorByStatusCode(response.json.status));
             }
         })
         .then((data) => {
             res.json(data);
         })
         .catch((error) => {
-            if (!error.length) {
-                error = 'No matches were found';
-            }
-
-            res.json({status: false, message: error});
+            res.json({status: false, message: error.message});
         });
 });
 

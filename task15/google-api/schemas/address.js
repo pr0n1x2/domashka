@@ -6,11 +6,10 @@ const addressSchema = {
         'googleId': {
             'description': 'Google address ID',
             'type': 'string',
-            'minLength': 40,
-            'maxLength': 40,
+            'minLength': 1,
         },
-        'address': {
-            'description': 'Address',
+        'placeId': {
+            'description': 'Google place ID',
             'type': 'string',
             "minLength": 1
         },

@@ -45,7 +45,7 @@ const userSchema = new Schema({
         maxlength: 30,
     },
     // Адрес доставки
-    address: Address,
+    address: [Address],
 }, {
     // Временные метки
     timestamps: true,
