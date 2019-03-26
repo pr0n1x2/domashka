@@ -1,0 +1,52 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+
+  div {
+    input {
+      border: 1px solid gray;
+      border-radius: 3px;
+      padding: 5px 3px;
+      font-size: 14px;
+      width: 600px;
+    }
+  }
+}
+
+.address {
+  font-weight: bold;
+  color: green;
+
+  &:before {
+    content: 'Your Address: ';
+  }
+}
+
+.error {
+  margin-top: 15px;
+  color: red;
+  font-weight: bold;
+}
+
+.error-hide {
+  display: none;
+}
+
+.container {
+  margin-top: 30px;
+  width: 605px;
+
+  div {
+    padding: 5px 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #d6d7e5;
+    }
+  }
+}

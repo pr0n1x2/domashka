@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  div.address(data-item= address.googleId)= address.address
+  h1= title
+  div.form
+    div
+      input(type='text', name='address', maxlength=200, placeholder='Enter Address')
+  div.error.error-hide
+  div.container
+
+  script(src="/javascripts/main.js")
