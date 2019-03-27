@@ -2,6 +2,8 @@ extends layout
 
 block content
   div.address(data-item= address.googleId)= address.address
+  div.nav
+    a(href='/users/addresses') View My Addresses
   h1= title
   div.form
     div
@@ -9,4 +11,5 @@ block content
   div.error.error-hide
   div.container
 
+  script(src="/javascripts/ajax.js")
   script(src="/javascripts/main.js")

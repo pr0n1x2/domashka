@@ -2,6 +2,13 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
 
+a {
+  color: #00B7FF;
+  text-decoration: none; }
+
+.nav {
+  margin: 0 0 15px; }
+
 .form {
   display: flex;
   flex-direction: row; }
@@ -14,7 +21,8 @@ body {
 
 .address {
   font-weight: bold;
-  color: green; }
+  color: green;
+  margin: 0 0 15px; }
   .address:before {
     content: 'Your Address: '; }
 
@@ -34,5 +42,49 @@ body {
     cursor: pointer; }
     .container div:hover {
       background-color: #d6d7e5; }
+
+.icon {
+  display: block;
+  background-image: url("../images/icons.png");
+  width: 32px;
+  height: 32px; }
+
+.addresses-container {
+  display: flex;
+  flex-direction: row; }
+  .addresses-container .addresses {
+    width: 50%; }
+    .addresses-container .addresses .user-address {
+      display: flex;
+      flex-direction: row;
+      margin: 0 0 15px; }
+      .addresses-container .addresses .user-address div {
+        width: 7%; }
+        .addresses-container .addresses .user-address div span.delete-address {
+          background-position: 0 0; }
+          .addresses-container .addresses .user-address div span.delete-address:hover {
+            background-position: 0 32px; }
+        .addresses-container .addresses .user-address div span.defauls-address {
+          background-position: -32px 0; }
+          .addresses-container .addresses .user-address div span.defauls-address:hover {
+            background-position: -32px 32px; }
+        .addresses-container .addresses .user-address div span.current-address {
+          background-position: -32px 32px; }
+        .addresses-container .addresses .user-address div span.show-photos {
+          background-position: 32px 0; }
+          .addresses-container .addresses .user-address div span.show-photos:hover {
+            background-position: 32px 32px; }
+        .addresses-container .addresses .user-address div span.current-photo {
+          background-position: 32px 32px; }
+      .addresses-container .addresses .user-address .formatted-address {
+        width: 79%; }
+  .addresses-container .photos {
+    width: 50%; }
+    .addresses-container .photos .photos-list {
+      margin: 0 0 15px; }
+      .addresses-container .photos .photos-list div {
+        text-align: center; }
+    .addresses-container .photos .photo {
+      text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

@@ -3,6 +3,15 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+a {
+  color: #00B7FF;
+  text-decoration: none;
+}
+
+.nav {
+  margin: 0 0 15px;
+}
+
 .form {
   display: flex;
   flex-direction: row;
@@ -21,6 +30,7 @@ body {
 .address {
   font-weight: bold;
   color: green;
+  margin: 0 0 15px;
 
   &:before {
     content: 'Your Address: ';
@@ -47,6 +57,84 @@ body {
 
     &:hover {
       background-color: #d6d7e5;
+    }
+  }
+}
+
+.icon {
+  display: block;
+  background-image: url('../images/icons.png');
+  width: 32px;
+  height: 32px;
+}
+
+.addresses-container {
+  display: flex;
+  flex-direction: row;
+
+  .addresses {
+    width: 50%;
+
+    .user-address {
+      display: flex;
+      flex-direction: row;
+      margin: 0 0 15px;
+
+      div {
+        width: 7%;
+
+        span.delete-address {
+          background-position: 0 0;
+
+          &:hover {
+            background-position: 0 32px;
+          }
+        }
+
+        span.defauls-address {
+          background-position: -32px 0;
+
+          &:hover {
+            background-position: -32px 32px;
+          }
+        }
+
+        span.current-address {
+          background-position: -32px 32px;
+        }
+
+        span.show-photos {
+          background-position: 32px 0;
+
+          &:hover {
+            background-position: 32px 32px;
+          }
+        }
+
+        span.current-photo {
+          background-position: 32px 32px;
+        }
+      }
+
+      .formatted-address {
+        width: 79%;
+      }
+    }
+  }
+
+  .photos {
+    width: 50%;
+
+    .photos-list {
+      margin: 0 0 15px;
+
+      div {
+        text-align: center;
+      }
+    }
+
+    .photo {
+      text-align: center;
     }
   }
 }

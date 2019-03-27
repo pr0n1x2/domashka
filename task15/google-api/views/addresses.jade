@@ -1,0 +1,33 @@
+extends layout
+
+block content
+    h1= title
+    div.nav
+        a(href='/') Back To Index Page
+    div.addresses-container
+        div.addresses
+            each address in addresses
+                div.user-address(data-item= address.id)
+                    div.formatted-address
+                        strong= address.name
+                        br
+                        = address.formattedAddress
+                    div
+                        a(href='javascript:;', title='Delete address')
+                            span.icon.delete-address
+                    div
+                        a(href='javascript:;', title='Make default address')
+                            if address.isMainAddress === false
+                                span.icon.defauls-address
+                            else
+                                span.icon.defauls-address.current-address
+                    div
+                        if address.photos.length > 0
+                            a(href='javascript:;', title='Show photos')
+                                span.icon.show-photos
+        div.photos
+            div.photos-list
+            div.photo
+
+    script(src="/javascripts/ajax.js")
+    script(src="/javascripts/addresses.js")

@@ -14,7 +14,6 @@ const GooglePlaces = function () {
             input: input,
             sessiontoken: this.SESSION_TOKEN, // Не знаю, что сюда передавать!!!
             language: 'uk',
-            // types: 'address',
         }).asPromise();
     };
 
@@ -22,7 +21,13 @@ const GooglePlaces = function () {
         return this.googleMapsClient.place({
             placeid: placeId,
             language: 'uk',
-            // fields: ['address_component', 'photo']
+        }).asPromise();
+    };
+
+    this.placesPhoto = (photoreference) => {
+        return this.googleMapsClient.placesPhoto({
+            photoreference: photoreference,
+            maxwidth: 500,
         }).asPromise();
     };
 

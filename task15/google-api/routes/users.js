@@ -6,6 +6,18 @@ const GooglePlaces = require('classes/places');
 const addressSchema = require('schemas/address');
 const placeSchema = require('schemas/place');
 
+router.get('/addresses', function(req, res, next) {
+    User.findById('5c94e45ab8bf111308c2973f').exec(function (err, user) {
+        const addresses = [];
+
+        for (let i = user.address.length - 1; i >= 0; i--) {
+            addresses.push(user.address[i]);
+        }
+
+        res.render('addresses', { title: 'My Addresses', addresses: addresses});
+    });
+});
+
 router.post('/address', function(req, res, next) {
     const formData = req.body;
     const googleMapsClient = new GooglePlaces();
@@ -19,7 +31,17 @@ router.post('/address', function(req, res, next) {
         return;
     }
 
-    googleMapsClient.placeDetails(formData.placeId)
+    User.findById('5c94e45ab8bf111308c2973f')
+        .then((user) => {
+            for (let address of user.address) {
+                if (address.googleAddressId === formData.googleId) {
+                    throw new Error('This address you have already saved');
+                }
+            }
+        })
+        .then(() => {
+            return googleMapsClient.placeDetails(formData.placeId);
+        })
         .then((response) => {
             if (response.json.status === 'OK') {
                 const userAddress = {
@@ -58,23 +80,29 @@ router.post('/address', function(req, res, next) {
             return place;
         })
         .then((place) => {
-            User.update(
-                {_id: '5c94e45ab8bf111308c2973f'},
-                { $push: { address: place } },
-                (err, user) => {
-                    if (!err) {
-                        result.status = true;
-                    } else {
-                        result.message = err;
-                    }
-
-                    res.json(result);
+            User.update({
+                _id: '5c94e45ab8bf111308c2973f'
+            }, {
+                '$set': {
+                    'address.$[].isMainAddress': false
                 }
-            );
+            }).then(() => {
+                User.update({
+                    _id: '5c94e45ab8bf111308c2973f'
+                }, {
+                    $push: {
+                        address: place
+                    }
+                }).then(() => {
+                    result.status = true;
+                    result.googleId = place.googleAddressId;
+                    result.address = place.formattedAddress;
+                    res.json(result);
+                });
+            });
         })
         .catch((error) => {
-            console.log(error);
-            // res.json({status: false, message: error.message});
+            res.json({status: false, message: error.message});
         });
 });
 
