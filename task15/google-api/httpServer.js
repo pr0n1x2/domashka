@@ -46,10 +46,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/address', addressRouter);
 
-// Здесь просто заполняю таблицу данными
-const seeder = new Seeder();
-seeder.seed();
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
