@@ -4,7 +4,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const sassMiddleware = require('node-sass-middleware');
-const Seeder = require('seeder');
 
 const { logger, express: expressLogger } = require('logger');
 
