@@ -1,11 +1,10 @@
 const express = require('express');
-const GooglePlaces = require('classes/places');
+const googleMapsClient = require('classes/places');
 const User = require('models/user');
 const router = express.Router();
 
 router.post('/google', function(req, res, next) {
     const formData = req.body;
-    const googleMapsClient = new GooglePlaces();
 
     googleMapsClient.placesAutoComplete(formData.address)
         .then((response) => {
@@ -53,7 +52,7 @@ router.post('/current', function(req, res, next) {
     const formData = req.body;
     const result = {status: false};
 
-    User.update({
+    User.updateOne({
         _id: '5c94e45ab8bf111308c2973f'
     }, {
         '$set': {
@@ -94,7 +93,6 @@ router.post('/photos', function(req, res, next) {
 
 router.post('/photo', function(req, res, next) {
     const formData = req.body;
-    const googleMapsClient = new GooglePlaces();
     const result = {status: false};
 
     googleMapsClient.placesPhoto(formData.photoreference)

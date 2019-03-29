@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Ajv = require('ajv');
 const User = require('models/user');
-const GooglePlaces = require('classes/places');
+const googleMapsClient = require('classes/places');
 const addressSchema = require('schemas/address');
 const placeSchema = require('schemas/place');
 
@@ -20,7 +20,6 @@ router.get('/addresses', function(req, res, next) {
 
 router.post('/address', function(req, res, next) {
     const formData = req.body;
-    const googleMapsClient = new GooglePlaces();
     const ajv = new Ajv({verbose: true});
     const valid = ajv.validate(addressSchema, formData);
     const result = {status: false};
@@ -80,14 +79,14 @@ router.post('/address', function(req, res, next) {
             return place;
         })
         .then((place) => {
-            User.update({
+            User.updateOne({
                 _id: '5c94e45ab8bf111308c2973f'
             }, {
                 '$set': {
                     'address.$[].isMainAddress': false
                 }
             }).then(() => {
-                User.update({
+                User.updateOne({
                     _id: '5c94e45ab8bf111308c2973f'
                 }, {
                     $push: {
