@@ -1,11 +1,12 @@
 const User = require('models/user');
+const config = require('config');
 
 const init = () => new Promise((resolve, reject) => {
     User.countDocuments()
         .then((count) => {
             if (!count) {
                 const user = new User({
-                    _id: '5c94e45ab8bf111308c2973f',
+                    _id: config.get('user:id'),
                     name: 'Сергей',
                     surname: 'Федоренко',
                     email: 'fedorenkos@dayrep.com',
