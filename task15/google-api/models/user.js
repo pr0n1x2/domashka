@@ -93,10 +93,30 @@ userSchema.methods.getCurrentAddress = function () {
     return currentAddress;
 };
 
+userSchema.methods.getAddressPhotos = function (addressId) {
+    let photos = [];
+
+    for (let address of this.address) {
+        if (address.id === addressId) {
+            photos = address.photos;
+            break;
+        }
+    }
+
+    return photos;
+};
+
 userSchema.statics.getUserCurrentAddress = function (userId) {
     return this.findById(userId)
         .then((user) => {
             return user.getCurrentAddress();
+        });
+};
+
+userSchema.statics.getUserAddressPhotos = function (userId, addressId) {
+    return this.findById(userId)
+        .then((user) => {
+            return user.getAddressPhotos(addressId);
         });
 };
 
@@ -122,7 +142,6 @@ userSchema.statics.setUserNewMainAddress = function (userId, address) {
 };
 
 userSchema.statics.setUserNewCurrentAddress = function (userId, addressId) {
-    console.log(addressId);
     const clearAllMainAddresses = this.updateOne(
         {_id: userId},
         {'$set': {
@@ -131,7 +150,7 @@ userSchema.statics.setUserNewCurrentAddress = function (userId, addressId) {
         });
 
     const setNewCurrentAddress = this.updateOne(
-        {userId, 'address._id': addressId},
+        {_id: userId, 'address._id': addressId},
         {$set: { "address.$.isMainAddress" : true}}
         );
 
