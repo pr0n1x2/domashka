@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  div.address
+  div.nav
+    a(href='/users/addresses') View My Addresses
+  h1= title
+  div.form
+    div
+      input(type='text', name='address', maxlength=200, placeholder='Enter Address')
+  div.error.error-hide
+  div.container
+
+  script(src="/javascripts/ajax.js")
+  script(src="/javascripts/localstorage.js")
+  script(src="/javascripts/main.js")

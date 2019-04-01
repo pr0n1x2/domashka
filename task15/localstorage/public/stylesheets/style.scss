@@ -1,0 +1,140 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+  text-decoration: none;
+}
+
+.nav {
+  margin: 0 0 15px;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+
+  div {
+    input {
+      border: 1px solid gray;
+      border-radius: 3px;
+      padding: 5px 3px;
+      font-size: 14px;
+      width: 600px;
+    }
+  }
+}
+
+.address {
+  font-weight: bold;
+  color: green;
+  margin: 0 0 15px;
+
+  &:before {
+    content: 'Your Address: ';
+  }
+}
+
+.error {
+  margin-top: 15px;
+  color: red;
+  font-weight: bold;
+}
+
+.error-hide {
+  display: none;
+}
+
+.container {
+  margin-top: 30px;
+  width: 605px;
+
+  div {
+    padding: 5px 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #d6d7e5;
+    }
+  }
+}
+
+.icon {
+  display: block;
+  background-image: url('../images/icons.png');
+  width: 32px;
+  height: 32px;
+}
+
+.addresses-container {
+  display: flex;
+  flex-direction: row;
+
+  .addresses {
+    width: 50%;
+
+    .user-address {
+      display: flex;
+      flex-direction: row;
+      margin: 0 0 15px;
+
+      div {
+        width: 7%;
+
+        span.delete-address {
+          background-position: 0 0;
+
+          &:hover {
+            background-position: 0 32px;
+          }
+        }
+
+        span.defauls-address {
+          background-position: -32px 0;
+
+          &:hover {
+            background-position: -32px 32px;
+          }
+        }
+
+        span.current-address {
+          background-position: -32px 32px;
+        }
+
+        span.show-photos {
+          background-position: 32px 0;
+
+          &:hover {
+            background-position: 32px 32px;
+          }
+        }
+
+        span.current-photo {
+          background-position: 32px 32px;
+        }
+      }
+
+      .formatted-address {
+        width: 79%;
+      }
+    }
+  }
+
+  .photos {
+    width: 50%;
+
+    .photos-list {
+      margin: 0 0 15px;
+
+      div {
+        text-align: center;
+      }
+    }
+
+    .photo {
+      text-align: center;
+    }
+  }
+}

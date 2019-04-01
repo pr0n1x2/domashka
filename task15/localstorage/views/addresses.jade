@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    h1= title
+    div.nav
+        a(href='/') Back To Index Page
+    div.addresses-container
+        div.addresses
+        div.photos
+            div.photos-list
+            div.photo
+
+    script(src="/javascripts/ajax.js")
+    script(src="/javascripts/localstorage.js")
+    script(src="/javascripts/addresses.js")
