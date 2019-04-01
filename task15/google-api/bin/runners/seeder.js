@@ -7,11 +7,13 @@ const init = () => new Promise((resolve, reject) => {
             if (!count) {
                 const user = new User({
                     _id: config.get('user:id'),
-                    name: 'Сергей',
-                    surname: 'Федоренко',
-                    email: 'fedorenkos@dayrep.com',
-                    phone: '067-230-34-12',
-                    password: 'R!DX$HChD59Jqy=K',
+                    person: {
+                        name: 'Сергей',
+                        surname: 'Федоренко',
+                        email: 'fedorenkos@dayrep.com',
+                        phone: '067-230-34-12',
+                        password: 'R!DX$HChD59Jqy=K',
+                    }
                 });
 
                 return user.save();

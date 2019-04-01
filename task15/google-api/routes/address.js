@@ -16,9 +16,8 @@ router.post('/google', function(req, res, next) {
 
 router.post('/delete', function(req, res, next) {
     addressController.deletePage(config.get('user:id'), req.body)
-        .then((result) => {
-            result.status = true;
-            res.json(result);
+        .then(() => {
+            res.json({status: true});
         })
         .catch((error) => {
             res.json({status: false, message: error.message});

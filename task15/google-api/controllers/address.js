@@ -19,10 +19,7 @@ const googlePage = (formData) => {
 };
 
 const deletePage = (userId, formData) => {
-    return User.findById(userId, { $pull: { address: { _id: formData.addressId } } }, null)
-        .then((user) => {
-            return {message: 'Address failed to delete, refresh the page'};
-        });
+    return User.findOneAndUpdate({_id: userId}, { $pull: { address: { _id: formData.addressId } } });
 };
 
 const currentPage = (userId, formData) => {
