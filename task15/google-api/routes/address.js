@@ -2,26 +2,14 @@ const express = require('express');
 const googleMapsClient = require('classes/places');
 const User = require('models/user');
 const router = express.Router();
+const addressController = require('controllers/address');
+const config = require('config')
 
 router.post('/google', function(req, res, next) {
-    const formData = req.body;
-
-    googleMapsClient.placesAutoComplete(formData.address)
-        .then((response) => {
-            if (response.json.status === 'OK') {
-                const data = {status: true, addresses: []};
-
-                for (let address of response.json.predictions) {
-                    data.addresses.push({id: address.id, place_id: address.place_id, address: address.description})
-                }
-
-                return data;
-            } else {
-                throw new Error(googleMapsClient.getErrorByStatusCode(response.json.status));
-            }
-        })
-        .then((data) => {
-            res.json(data);
+    addressController.googlePage(req.body)
+        .then((result) => {
+            result.status = true;
+            res.json(result);
         })
         .catch((error) => {
             res.json({status: false, message: error.message});
@@ -29,46 +17,24 @@ router.post('/google', function(req, res, next) {
 });
 
 router.post('/delete', function(req, res, next) {
-    const formData = req.body;
-    const result = {status: false};
-
-    User.findByIdAndUpdate(
-        '5c94e45ab8bf111308c2973f',
-        { $pull: { address: { _id: formData.addressId } } },
-        null,
-        (err, user) => {
-            if (!err) {
-                result.status = true;
-            } else {
-                result.message = 'Address failed to delete, refresh the page';
-            }
-
+    addressController.deletePage(config.get('user:id'), req.body)
+        .then((result) => {
+            result.status = true;
             res.json(result);
-        }
-    );
+        })
+        .catch((error) => {
+            res.json({status: false, message: error.message});
+        });
 });
 
 router.post('/current', function(req, res, next) {
-    const formData = req.body;
-    const result = {status: false};
-
-    User.updateOne({
-        _id: '5c94e45ab8bf111308c2973f'
-    }, {
-        '$set': {
-            'address.$[].isMainAddress': false
-        }
-    }).then(() => {
-        User.updateOne({
-            _id: '5c94e45ab8bf111308c2973f',
-            'address._id': formData.addressId
-        }, {
-            $set: { "address.$.isMainAddress" : true }
-        }).then(() => {
-            result.status = true;
-            res.json(result);
+    addressController.currentPage(config.get('user:id'), req.body)
+        .then(() => {
+            res.json({status: true});
+        })
+        .catch((error) => {
+            res.json({status: false, message: error.message});
         });
-    });
 });
 
 router.post('/photos', function(req, res, next) {
