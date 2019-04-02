@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const addressController = require('controllers/address');
-const config = require('config')
 
 router.post('/google', function(req, res, next) {
     addressController.googlePage(req.body)
@@ -15,7 +14,7 @@ router.post('/google', function(req, res, next) {
 });
 
 router.post('/delete', function(req, res, next) {
-    addressController.deletePage(config.get('user:id'), req.body)
+    addressController.deletePage(res.locals.user, req.body)
         .then(() => {
             res.json({status: true});
         })
@@ -25,7 +24,7 @@ router.post('/delete', function(req, res, next) {
 });
 
 router.post('/current', function(req, res, next) {
-    addressController.currentPage(config.get('user:id'), req.body)
+    addressController.currentPage(res.locals.user, req.body)
         .then(() => {
             res.json({status: true});
         })
@@ -35,7 +34,7 @@ router.post('/current', function(req, res, next) {
 });
 
 router.post('/photos', function(req, res, next) {
-    addressController.photosPage(config.get('user:id'), req.body)
+    addressController.photosPage(res.locals.user, req.body)
         .then((photos) => {
             res.json({status: true, photos: photos});
         })

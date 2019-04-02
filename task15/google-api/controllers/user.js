@@ -1,17 +1,13 @@
-const User = require('models/user');
 const Ajv = require('ajv');
 const addressSchema = require('schemas/address');
 const placeSchema = require('schemas/place');
 const googleMapsClient = require('classes/places');
 
-const addressesPage = (userId) => {
-    return User.findById(userId)
-        .then((user) => {
-            return user.getAllAddresses(-1);
-        });
+const addressesPage = (user) => {
+    return Promise.resolve(user.getAllAddresses(-1));
 };
 
-const addressPage = (formData, userId) => {
+const addressPage = (formData, user) => {
     const ajv = new Ajv({verbose: true});
     const valid = ajv.validate(addressSchema, formData);
 
@@ -20,9 +16,9 @@ const addressPage = (formData, userId) => {
         return Promise.reject(new Error(message));
     }
 
-    return User.findById(userId)
-        .then((user) => {
-            if (user.isExistsAddress(formData.googleId)) {
+    return Promise.resolve(user.isExistsAddress(formData.googleId))
+        .then((existsResult) => {
+            if (existsResult) {
                 throw new Error('This address you have already saved');
             }
         })
@@ -67,7 +63,10 @@ const addressPage = (formData, userId) => {
             return newAddress;
         })
         .then((newAddress) => {
-            return User.setUserNewMainAddress(userId, newAddress)
+            user.clearAllMainAddresses();
+            user.address.push(newAddress);
+
+            return user.save()
                 .then(() => {
                     const result = {
                         googleId: newAddress.googleAddressId,

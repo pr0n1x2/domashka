@@ -13,6 +13,10 @@ const userSchema = new Schema({
     timestamps: true,
 });
 
+userSchema.virtual('fullName').get(function () {
+    return `${this.person.name} ${this.person.surname}`;
+});
+
 userSchema.methods.isExistsAddress = function (googleAddressId) {
     for (let address of this.address) {
         if (address.googleAddressId === googleAddressId) {
@@ -68,6 +72,24 @@ userSchema.methods.getAddressPhotos = function (addressId) {
     return photos;
 };
 
+userSchema.methods.clearAllMainAddresses = function () {
+    for (let address of this.address) {
+        if (address.isMainAddress === true) {
+            address.isMainAddress = false;
+        }
+    }
+};
+
+userSchema.methods.setNewCurrentAddress = function (addressId) {
+    this.clearAllMainAddresses();
+
+    for (let address of this.address) {
+        if (address.id === addressId) {
+            address.isMainAddress = true;
+        }
+    }
+}
+
 userSchema.statics.getUserCurrentAddress = function (userId) {
     return this.findById(userId)
         .then((user) => {
@@ -82,45 +104,45 @@ userSchema.statics.getUserAddressPhotos = function (userId, addressId) {
         });
 };
 
-userSchema.statics.setUserNewMainAddress = function (userId, address) {
-    const clearAllMainAddresses = this.updateOne(
-        {_id: userId},
-        {'$set': {
-                'address.$[].isMainAddress': false
-            }
-        });
+// userSchema.statics.setUserNewMainAddress = function (userId, address) {
+//     const clearAllMainAddresses = this.updateOne(
+//         {_id: userId},
+//         {'$set': {
+//                 'address.$[].isMainAddress': false
+//             }
+//         });
+//
+//     const setMainAddresses = this.updateOne(
+//         {_id: userId},
+//         {$push: {
+//                 address: address
+//             }
+//         });
+//
+//     return clearAllMainAddresses.exec()
+//         .then(() => {
+//             return setMainAddresses.exec()
+//         });
+// };
 
-    const setMainAddresses = this.updateOne(
-        {_id: userId},
-        {$push: {
-                address: address
-            }
-        });
-
-    return clearAllMainAddresses.exec()
-        .then(() => {
-            return setMainAddresses.exec()
-        });
-};
-
-userSchema.statics.setUserNewCurrentAddress = function (userId, addressId) {
-    const clearAllMainAddresses = this.updateOne(
-        {_id: userId},
-        {'$set': {
-                'address.$[].isMainAddress': false
-            }
-        });
-
-    const setNewCurrentAddress = this.updateOne(
-        {_id: userId, 'address._id': addressId},
-        {$set: { "address.$.isMainAddress" : true}}
-        );
-
-    return clearAllMainAddresses.exec()
-        .then(() => {
-            return setNewCurrentAddress.exec()
-        });
-};
+// userSchema.statics.setUserNewCurrentAddress = function (userId, addressId) {
+//     const clearAllMainAddresses = this.updateOne(
+//         {_id: userId},
+//         {'$set': {
+//                 'address.$[].isMainAddress': false
+//             }
+//         });
+//
+//     const setNewCurrentAddress = this.updateOne(
+//         {_id: userId, 'address._id': addressId},
+//         {$set: { "address.$.isMainAddress" : true}}
+//         );
+//
+//     return clearAllMainAddresses.exec()
+//         .then(() => {
+//             return setNewCurrentAddress.exec()
+//         });
+// };
 
 const User = mongoose.model('User', userSchema);
 

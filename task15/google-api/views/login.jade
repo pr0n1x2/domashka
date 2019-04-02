@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    div.nav
+        a(href='/register') Register
+    h1= title
+    if error
+    div.error= error
+    form(action='/login', method='post')
+        div.auth
+            div
+                input(type='text', name='email', maxlength=200, placeholder='Enter your e-mail')
+            div
+                input(type='password', name='password', maxlength=30, placeholder='Enter your password')
+            div
+                button(type='submit') Login
+
+    script(src="/javascripts/auth.js")
+    script(src="/javascripts/login.js")

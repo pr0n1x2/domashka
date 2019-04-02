@@ -1,4 +1,3 @@
-const User = require('models/user');
 const googleMapsClient = require('classes/places');
 
 const googlePage = (formData) => {
@@ -18,16 +17,18 @@ const googlePage = (formData) => {
         });
 };
 
-const deletePage = (userId, formData) => {
-    return User.findOneAndUpdate({_id: userId}, { $pull: { address: { _id: formData.addressId } } });
+const deletePage = (user, formData) => {
+    user.address.pull({_id: formData.addressId});
+    return user.save();
 };
 
-const currentPage = (userId, formData) => {
-    return User.setUserNewCurrentAddress(userId, formData.addressId);
+const currentPage = (user, formData) => {
+    user.setNewCurrentAddress(formData.addressId);
+    return user.save();
 };
 
-const photosPage = (userId, formData) => {
-    return User.getUserAddressPhotos(userId, formData.addressId)
+const photosPage = (user, formData) => {
+    return Promise.resolve(user.getAddressPhotos(formData.addressId));
 };
 
 const photoPage = (formData) => {

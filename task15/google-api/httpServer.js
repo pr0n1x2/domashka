@@ -2,8 +2,10 @@ const createError = require('http-errors');
 const helmet = require('helmet');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const sassMiddleware = require('node-sass-middleware');
+const User = require('models/user');
+const config = require('config');
+const session = require('express-session');
 
 const { logger, express: expressLogger } = require('logger');
 
@@ -21,7 +23,6 @@ app.set('view engine', 'jade');
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -29,6 +30,46 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  name: config.get('session:name'),
+  resave: false,
+  saveUninitialized: false,
+  secret: config.get('session:secret'),
+  cookie: {
+    maxAge: config.get('session:lifetime'),
+    sameSite: true,
+    secure: config.get('session:in_prod'), // Нужно менять на рабочем сервере с https
+  }
+}));
+app.use((req, res, next) => {
+  const notAuthPage = ['/login', '/register'];
+  if (!req.session.userId) {
+    if (notAuthPage.indexOf(req.url) !== -1) {
+      next();
+    } else {
+      return res.redirect('/login');
+    }
+  } else {
+    if (notAuthPage.indexOf(req.url) !== -1) {
+      return res.redirect('/');
+    } else {
+      next();
+    }
+  }
+});
+app.use((req, res, next) => {
+  const {userId} = req.session;
+  if (userId) {
+    User.findById(userId)
+        .then((user) => {
+          res.locals.user = user;
+          next();
+        });
+  } else {
+    next();
+  }
+});
 
 let isRoutesEnabled = false;
 app.use((req, res, next) => {
@@ -44,6 +85,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/address', addressRouter);
+app.use('/register', usersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -40,8 +40,7 @@ const personSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 8,
-        maxlength: 30,
+        minlength: 6,
     },
 }, {
     _id: false

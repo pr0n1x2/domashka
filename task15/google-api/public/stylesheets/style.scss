@@ -10,6 +10,10 @@ a {
 
 .nav {
   margin: 0 0 15px;
+
+  a {
+    margin-right: 10px;
+  }
 }
 
 .form {
@@ -23,6 +27,24 @@ a {
       padding: 5px 3px;
       font-size: 14px;
       width: 600px;
+    }
+  }
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+
+  div {
+    margin: 6px 0;
+
+    input {
+      border: 1px solid gray;
+      border-radius: 3px;
+      padding: 5px 3px;
+      font-size: 14px;
+      width: 100%;
     }
   }
 }

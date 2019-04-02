@@ -8,6 +8,8 @@ a {
 
 .nav {
   margin: 0 0 15px; }
+  .nav a {
+    margin-right: 10px; }
 
 .form {
   display: flex;
@@ -18,6 +20,19 @@ a {
     padding: 5px 3px;
     font-size: 14px;
     width: 600px; }
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  width: 300px; }
+  .auth div {
+    margin: 6px 0; }
+    .auth div input {
+      border: 1px solid gray;
+      border-radius: 3px;
+      padding: 5px 3px;
+      font-size: 14px;
+      width: 100%; }
 
 .address {
   font-weight: bold;

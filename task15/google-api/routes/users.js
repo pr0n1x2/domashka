@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('controllers/user');
-const config = require('config');
 
 router.get('/addresses', function(req, res, next) {
-    userController.addressesPage(config.get('user:id'))
+    userController.addressesPage(res.locals.user)
         .then((addresses) => {
             res.render('addresses', { title: 'My Addresses', addresses: addresses});
         })
@@ -14,7 +13,7 @@ router.get('/addresses', function(req, res, next) {
 });
 
 router.post('/address', function(req, res, next) {
-    userController.addressPage(req.body, config.get('user:id'))
+    userController.addressPage(req.body, res.locals.user)
         .then((result) => {
             result.status = true;
             res.json(result);
