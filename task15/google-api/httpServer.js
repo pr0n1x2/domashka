@@ -61,11 +61,16 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const {userId} = req.session;
   if (userId) {
-    User.findById(userId)
-        .then((user) => {
-          res.locals.user = user;
-          next();
-        });
+    if (typeof req.body.notAuth === 'undefined') {
+      User.findById(userId)
+          .then((user) => {
+            res.locals.user = user;
+            next();
+          });
+    }
+    else {
+      next();
+    }
   } else {
     next();
   }

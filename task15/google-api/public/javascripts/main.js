@@ -53,6 +53,7 @@ window.addEventListener('load', () => {
         if (address.value.length > 2) {
             const formData = {
                 address: address.value,
+                notAuth: true
             };
 
             hideError();
