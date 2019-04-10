@@ -52,8 +52,7 @@ window.addEventListener('load', () => {
     address.addEventListener('keyup', () => {
         if (address.value.length > 2) {
             const formData = {
-                address: address.value,
-                notAuth: true
+                address: address.value
             };
 
             hideError();

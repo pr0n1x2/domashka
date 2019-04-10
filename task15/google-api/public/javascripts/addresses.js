@@ -171,8 +171,7 @@ const placePhoto = (url) => {
 
 const showPhoto = (el) => {
     const formData = {
-        photoreference: el.dataset.ref,
-        notAuth: true
+        photoreference: el.dataset.ref
     };
 
     postData(

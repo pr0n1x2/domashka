@@ -59,9 +59,10 @@ app.use((req, res, next) => {
   }
 });
 app.use((req, res, next) => {
+  const notUserRequiredPages = ['/address/google', '/address/photo'];
   const {userId} = req.session;
   if (userId) {
-    if (typeof req.body.notAuth === 'undefined') {
+    if (notUserRequiredPages.indexOf(req.url) === -1) {
       User.findById(userId)
           .then((user) => {
             res.locals.user = user;
