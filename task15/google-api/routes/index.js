@@ -2,9 +2,18 @@ const express = require('express');
 const router = express.Router();
 const homeController = require('controllers/home');
 const config = require('config');
+const passport = require('passport');
+const passportConf = require('classes/passport');
+
+const passportSignIn = passport.authenticate('local', {
+    session: true,
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+});
 
 router.get('/', function(req, res, next) {
-    homeController.homePage(res.locals.user)
+    homeController.homePage(req.user)
         .then((currentAddress) => {
             res.render('index', { title: 'Enter Address', address: currentAddress});
         })
@@ -18,21 +27,6 @@ router.get('/register', function(req, res, next) {
     res.render('register', { title: 'Registration', error: null });
 });
 
-router.get('/login', function(req, res, next) {
-    res.render('login', { title: 'Authorization', error: null });
-});
-
-router.get('/logout', function(req, res, next) {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.redirect('/');
-        }
-
-        res.clearCookie(config.get('session:name'));
-        res.redirect('/login');
-    });
-});
-
 router.post('/register', function(req, res, next) {
     homeController.registerAction(req.body)
         .then((user) => {
@@ -43,14 +37,22 @@ router.post('/register', function(req, res, next) {
         });
 });
 
-router.post('/login', function(req, res, next) {
-    homeController.loginAction(req)
-        .then(() => {
-            res.redirect('/');
-        })
-        .catch((error) => {
-            res.render('login', { title: 'Authorization', error: error.message });
-        });
+router.get('/login', function(req, res, next) {
+    res.render('login', { title: 'Authorization', error: req.flash('error') });
+});
+
+router.post('/login', passportSignIn);
+
+router.get('/auth/facebook', passport.authenticate('facebook'));
+
+router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}));
+
+router.get('/logout', function(req, res, next) {
+    req.logout();
+    res.redirect('/login');
 });
 
 module.exports = router;

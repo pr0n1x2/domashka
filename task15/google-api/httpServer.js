@@ -6,6 +6,9 @@ const sassMiddleware = require('node-sass-middleware');
 const User = require('models/user');
 const config = require('config');
 const session = require('express-session');
+const passport  = require('passport');
+const flash = require('connect-flash');
+const url = require('url');
 
 const { logger, express: expressLogger } = require('logger');
 
@@ -42,39 +45,26 @@ app.use(session({
     secure: config.get('session:in_prod'), // Нужно менять на рабочем сервере с https
   }
 }));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use((req, res, next) => {
-  const notAuthPage = ['/login', '/register'];
-  if (!req.session.userId) {
-    if (notAuthPage.indexOf(req.url) !== -1) {
-      next();
-    } else {
-      return res.redirect('/login');
-    }
-  } else {
-    if (notAuthPage.indexOf(req.url) !== -1) {
-      return res.redirect('/');
-    } else {
-      next();
-    }
-  }
-});
-app.use((req, res, next) => {
-  const notUserRequiredPages = ['/address/google', '/address/photo'];
-  const {userId} = req.session;
-  if (userId) {
-    if (notUserRequiredPages.indexOf(req.url) === -1) {
-      User.findById(userId)
-          .then((user) => {
-            res.locals.user = user;
-            next();
-          });
-    }
-    else {
-      next();
-    }
-  } else {
+    console.log(url.parse(req.url).pathname);
     next();
-  }
+  // const notAuthPage = ['/login', '/register', '/auth/facebook', '/auth/facebook/callback'];
+  // if (!req.isAuthenticated()) {
+  //   if (notAuthPage.indexOf(req.url) !== -1) {
+  //     next();
+  //   } else {
+  //     return res.redirect('/login');
+  //   }
+  // } else {
+  //   if (notAuthPage.indexOf(req.url) !== -1) {
+  //     return res.redirect('/');
+  //   } else {
+  //     next();
+  //   }
+  // }
 });
 
 let isRoutesEnabled = false;

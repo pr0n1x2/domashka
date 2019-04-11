@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require('controllers/user');
 
 router.get('/addresses', function(req, res, next) {
-    userController.addressesPage(res.locals.user)
+    userController.addressesPage(req.user)
         .then((addresses) => {
             res.render('addresses', { title: 'My Addresses', addresses: addresses});
         })
@@ -13,7 +13,7 @@ router.get('/addresses', function(req, res, next) {
 });
 
 router.post('/address', function(req, res, next) {
-    userController.addressPage(req.body, res.locals.user)
+    userController.addressPage(req.body, req.user)
         .then((result) => {
             result.status = true;
             res.json(result);

@@ -14,7 +14,7 @@ router.post('/google', function(req, res, next) {
 });
 
 router.post('/delete', function(req, res, next) {
-    addressController.deletePage(res.locals.user, req.body)
+    addressController.deletePage(req.user, req.body)
         .then(() => {
             res.json({status: true});
         })
@@ -24,7 +24,7 @@ router.post('/delete', function(req, res, next) {
 });
 
 router.post('/current', function(req, res, next) {
-    addressController.currentPage(res.locals.user, req.body)
+    addressController.currentPage(req.user, req.body)
         .then(() => {
             res.json({status: true});
         })
@@ -34,7 +34,7 @@ router.post('/current', function(req, res, next) {
 });
 
 router.post('/photos', function(req, res, next) {
-    addressController.photosPage(res.locals.user, req.body)
+    addressController.photosPage(req.user, req.body)
         .then((photos) => {
             res.json({status: true, photos: photos});
         })
