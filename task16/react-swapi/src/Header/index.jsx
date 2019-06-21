@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import logo from '../Header/star-wars.svg';
+import logo from './star-wars.svg';
 import styles from './styles.module.scss';
 
 class Header extends Component {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Header from '../Header';
-import axios from 'axios';
 import styles from './styles.module.scss';
+import axios from 'axios';
 
 class App extends Component {
   state = {
