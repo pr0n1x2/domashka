@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Join | ChatApp</title>
+  <meta name="viewport" content="width=device-width, inital-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body class="centered-form">
+<div class="centered-form__form">
+  <form action="/" method="post">
+    <div class="form-field"><h3>Join Chat</h3></div>
+    <% if (error) { %>
+      <div class="alert alert-danger">
+        <strong>Error!</strong> <%= error %>
+      </div>
+    <% } %>
+    <div class="form-field">
+      <label>Display name</label>
+      <input type="text" name="name" maxlength="30" value="<%= data.name %>" autofocus>
+    </div>
+    <div class="form-field">
+      <label>Choose a room</label>
+      <select class="form-control" name="roomId">
+        <% rooms.forEach(function(room) { %>
+          <% if (data.roomId === room.id) { %>
+            <option value="<%= room.id %>" selected><%= room.name %></option>
+          <% } else { %>
+            <option value="<%= room.id %>"><%= room.name %></option>
+          <% } %>
+        <% }); %>
+      </select>
+    </div>
+    <div class="form-field">
+      <button type="submit">Join</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
