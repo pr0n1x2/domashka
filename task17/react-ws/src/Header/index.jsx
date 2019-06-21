@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import logo from '../Header/star-wars.svg';
+import logo from './star-wars.svg';
 import styles from './styles.module.scss';
 
 class Header extends Component {
     render() {
         const films = this.props.films;
+        const movies = [];
 
-        const movies = films.map((title, index) => {
-            return <li key={index}>{title}</li>
+        films.forEach((title, index) => {
+            movies.push(<li key={index}>{title}</li>);
         });
 
         return (

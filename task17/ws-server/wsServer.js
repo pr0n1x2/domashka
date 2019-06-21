@@ -6,9 +6,7 @@ module.exports.init = async (server) => {
   const io = socketio(server, options);
 
   const movies = async () => {
-    const films = await Film.find({}).select('id title');
-    console.log(films);
-    return films;
+    return await Film.find({}).select('id title');
   };
 
   const films = await movies();

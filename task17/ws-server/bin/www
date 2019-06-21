@@ -4,16 +4,16 @@ require('config');
 
 const { logger } = require('logger');
 
+const seederFilmRunner = require('./runners/seeders/film');
 const dbRunner = require('./runners/db');
 const webRunner = require('./runners/web');
-const seederFilmRunner = require('./runners/seeders/film');
 
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 Promise.resolve()
   .then(dbRunner)
-  .then(webRunner)
   .then(seederFilmRunner)
+  .then(webRunner)
   .then(() => {
     console.log('\x1b[42m\x1b[30m ====> Ready to work <==== \x1b[0m');
   })

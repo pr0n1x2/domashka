@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
+import styles from './styles.module.scss';
 import Header from '../Header';
 import socketIOClient from 'socket.io-client'
-import styles from './styles.module.scss';
 
 class App extends Component {
   constructor() {
@@ -14,18 +14,21 @@ class App extends Component {
 
   componentDidMount() {
     const socket = socketIOClient(this.state.endpoint);
-    socket.on('get films', (films) => {
-      const result = Object.keys(films).map(function(key) {
-        return [Number(key), films[key]];
-      });
-      console.log(result);
-      this.setState({ films: result });
+
+    socket.on('get films', (movies) => {
+      const films = new Map();
+
+      for (let film of movies) {
+        films.set(film._id, film.title);
+      }
+
+      this.setState({ films: films });
     });
   }
 
   render() {
     const films = this.state.films;
-    console.log(films);
+
     return (
       <div className={styles.App}>
         <Header films={films}/>
