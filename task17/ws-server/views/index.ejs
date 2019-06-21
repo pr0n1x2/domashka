@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const socket = io();
+
+        socket.on('connect', function() {
+          // let searchQuery = window.location.search.substring(1);
+          // let params = JSON.parse('{"' + decodeURI(searchQuery).replace(/&/g, '","').replace(/\+/g, ' ').replace(/=/g,'":"') + '"}');
+
+          // socket.emit('join', params, function(err) {
+          socket.emit('join', function(err) {
+            if (err) {
+              alert(err);
+              window.location.href = '/';
+            } else {
+              console.log('No Error');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

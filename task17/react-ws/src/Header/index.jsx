@@ -5,11 +5,10 @@ import styles from './styles.module.scss';
 class Header extends Component {
     render() {
         const films = this.props.films;
-        console.log(films);
-        // const movies = films.map((film) => {
-        //     console.log(film);
-        //     return <li key={film._id}>{film.title}</li>
-        // });
+
+        const movies = films.map((title, index) => {
+            return <li key={index}>{title}</li>
+        });
 
         return (
             <header className={styles['App-header']}>
@@ -17,7 +16,7 @@ class Header extends Component {
                 <p className={styles['App-title']}>
                     List of all movies from the Star Wars universe
                 </p>
-                <ul className={styles['App-movies']}>{/*movies*/}</ul>
+                <ul className={styles['App-movies']}>{movies}</ul>
             </header>
         );
     }
